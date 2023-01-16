@@ -1544,7 +1544,6 @@ mmdet/.mim/tools/model_converters/selfsup2mmdet.py
 mmdet/.mim/tools/model_converters/upgrade_model_version.py
 mmdet/.mim/tools/model_converters/upgrade_ssd_version.py
 mmdet/apis/__init__.py
-mmdet/apis/inference.py
 mmdet/apis/test.py
 mmdet/apis/train.py
 mmdet/core/__init__.py

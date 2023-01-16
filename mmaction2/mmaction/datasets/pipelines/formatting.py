@@ -25,6 +25,8 @@ def to_tensor(data):
         return torch.LongTensor([data])
     if isinstance(data, float):
         return torch.FloatTensor([data])
+    if isinstance(data, np.int64):
+        return torch.tensor([data])
     raise TypeError(f'type {type(data)} cannot be converted to tensor.')
 
 
@@ -288,7 +290,7 @@ class FormatShape:
         if self.input_format == 'NCTHW':
             num_clips = results['num_clips']
             clip_len = results['clip_len']
-            
+
             imgs = imgs.reshape((-1, num_clips, clip_len) + imgs.shape[1:])
             # N_crops x N_clips x L x H x W x C
             imgs = np.transpose(imgs, (0, 1, 5, 2, 3, 4))

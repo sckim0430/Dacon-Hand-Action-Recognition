@@ -10,7 +10,18 @@
       "request": "launch",
       "program": "${file}",
       "console": "integratedTerminal",
-      "justMyCode": true
+      "justMyCode": true,
+      "args": [
+        // "/workspace/Dacon-Hand-Action-Recognition/mmaction2/configs/skeleton/posec3d/dacon_hand_posec3d.py",
+        // "--work-dir",
+        // "/home/sckim/Dataset/ckpt/dacon_posec3d/",
+        // "--test-best",
+        // "--gpus",
+        // "1",
+        // "--seed",
+        // "12345",
+        // "--deterministic"
+      ]
     }
   ]
 }

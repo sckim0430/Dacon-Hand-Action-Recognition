@@ -72,11 +72,5 @@ class I3DHead(BaseHead):
         x = x.view(x.shape[0], -1)
         # [N, in_channels]
         cls_score = self.fc_cls(x)
-        cls_score = F.sigmoid(cls_score)
-
-        # print()
-        # print(cls_score)
-        # print(cls_score.shape)
-
         # [N, num_classes]
         return cls_score

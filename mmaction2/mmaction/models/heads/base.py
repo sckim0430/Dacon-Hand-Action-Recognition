@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 
-from ...core import top_k_accuracy,mean_class_accuracy
+from ...core import top_k_accuracy, mean_class_accuracy
 from ..builder import build_loss
 
 
@@ -74,11 +74,6 @@ class BaseHead(nn.Module, metaclass=ABCMeta):
     @abstractmethod
     def forward(self, x):
         """Defines the computation performed at every call."""
-    def get_accuracy(self,y_true, y_prob):
-
-        y_prob = np.asarray([1 if _ >= 0.5 else 0 for _ in y_prob])
-
-        return (y_true == y_prob).sum().item() / y_true.size
 
     def loss(self, cls_score, labels, **kwargs):
         """Calculate the loss given output ``cls_score``, target ``labels``.
@@ -102,16 +97,12 @@ class BaseHead(nn.Module, metaclass=ABCMeta):
             labels = labels.unsqueeze(0)
 
         if not self.multi_class and cls_score.size() != labels.size():
-            acc = self.get_accuracy(labels.detach().cpu().numpy(),cls_score.squeeze().detach().cpu().numpy())
-
-            losses['acc'] = torch.tensor(acc,device=cls_score.device)
-        
-            # top_k_acc = top_k_accuracy(cls_score.detach().cpu().numpy(),
-            #                            labels.detach().cpu().numpy(),
-            #                            self.topk)
-            # for k, a in zip(self.topk, top_k_acc):
-            #     losses[f'top{k}_acc'] = torch.tensor(
-            #         a, device=cls_score.device)
+            top_k_acc = top_k_accuracy(cls_score.detach().cpu().numpy(),
+                                       labels.detach().cpu().numpy(),
+                                       self.topk)
+            for k, a in zip(self.topk, top_k_acc):
+                losses[f'top{k}_acc'] = torch.tensor(
+                    a, device=cls_score.device)
 
         elif self.multi_class and self.label_smooth_eps != 0:
             labels = ((1 - self.label_smooth_eps) * labels +
